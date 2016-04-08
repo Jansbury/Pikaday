@@ -180,9 +180,6 @@
         // bind the picker to a form field
         field: null,
 
-        // split the output to three form fields: [dayField, monthField, yearField]
-        splittedOutput: null,
-
         // use a radio button list for month and year lists instead of dropdown lists
         radioButtons: false,
 
@@ -803,14 +800,6 @@
             if (this._o.field) {
                 this._o.field.value = this.toString();
                 fireEvent(this._o.field, 'change', { firedBy: this });
-            }
-            if (this._o.splittedOutput) {
-                var dayField = this._o.splittedOutput[0];
-                var monthField = this._o.splittedOutput[1];
-                var yearField = this._o.splittedOutput[2];
-                dayField.value = this._d.getDate();
-                monthField.value = this._d.getMonth();
-                yearField.value = this._d.getFullYear();
             }
             if (!preventOnSelect && typeof this._o.onSelect === 'function') {
                 this._o.onSelect.call(this, this.getDate());

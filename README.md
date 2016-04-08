@@ -75,7 +75,6 @@ As the examples demonstrate above
 Pikaday has many useful options:
 
 * `field` bind the datepicker to a form field
-* `splittedOutput` split the date output on three fields, day, month and year. Accepts an array of the three fields. __ALPHA VERSION__
 * `trigger` use a different element to trigger opening the datepicker, see [trigger example][] (default to `field`)
 * `bound` automatically show/hide the datepicker on `field` focus (default `true` if `field` is set)
 * `position` preferred position of the datepicker relative to the form field, e.g.: `top right`, `bottom right` **Note:** automatic adjustment may occur to avoid datepicker from being displayed outside the viewport, see [positions example][] (default to 'bottom left')
