@@ -75,6 +75,7 @@ As the examples demonstrate above
 Pikaday has many useful options:
 
 * `field` bind the datepicker to a form field
+* `radioButtons` use label-input (radio button) pairs instead of month and year select-lists. Not yet fully compatible with all browsers
 * `trigger` use a different element to trigger opening the datepicker, see [trigger example][] (default to `field`)
 * `bound` automatically show/hide the datepicker on `field` focus (default `true` if `field` is set)
 * `position` preferred position of the datepicker relative to the form field, e.g.: `top right`, `bottom right` **Note:** automatic adjustment may occur to avoid datepicker from being displayed outside the viewport, see [positions example][] (default to 'bottom left')
@@ -93,6 +94,10 @@ Pikaday has many useful options:
 * `showWeekNumber` show the ISO week number at the head of the row (default `false`)
 * `isRTL` reverse the calendar for right-to-left languages
 * `i18n` language defaults for month and weekday names (see internationalization below)
+* `monthLabel` replace the label that shows the currently selected month with a static string label
+* `yearLabel` replace the label that shows the currently selected year with a static string label
+* `twoDigitOutput` always output two-digit numbers for year and month ("02" instead of "2")
+* `fourDigitOutputLastYear` outputs the last selectable year number with all four digits regardless of the twoDigitOutput settings
 * `yearSuffix` additional text to append to the year in the title
 * `showMonthAfterYear` render the month after year in the title (default `false`)
 * `showDaysInNextAndPreviousMonths` render days of the calendar grid that fall in the next or previous months to the current month instead of rendering an empty table cell (default: false)
