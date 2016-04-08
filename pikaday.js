@@ -183,6 +183,9 @@
         // split the output to three form fields: [dayField, monthField, yearField]
         splittedOutput: null,
 
+        // use a radio button list for month and year lists instead of dropdown lists
+        radioButtons: false,
+
         // automatically show/hide the picker on `field` focus (default `true` if `field` is set)
         bound: undefined,
 
@@ -218,6 +221,16 @@
 
         // show week numbers at head of row
         showWeekNumber: false,
+
+        // Instead of showing the selected month, show a custom string
+        monthLabel: null,
+        // Instead of showing the selected year, show a custom string
+        yearLabel: null,
+
+        // Output all day and year numbers with two digits (e.g., "01" instead of "1", "16" instead of "2016")
+        twoDigitOutput: false,
+        // Output only the last year as a whole year number (i.e. "2016" instead of "16"), only applies when twoDigitOutput is true
+        fourDigitOutputLastYear: false,
 
         // used internally (don't config outside)
         minYear: 0,
@@ -283,7 +296,12 @@
 
     renderDay = function(opts)
     {
-        var arr = [];
+        var arr = [],
+            dayStr = opts.day.toString();
+
+        if (opts.twoDigitOutput && dayStr.length == 1) {
+            dayStr = '0' + dayStr;
+        }
         if (opts.isEmpty) {
             if (opts.showDaysInNextAndPreviousMonths) {
                 arr.push('is-outside-current-month');
@@ -309,10 +327,11 @@
         if (opts.isEndRange) {
             arr.push('is-endrange');
         }
+
         return '<td data-day="' + opts.day + '" class="' + arr.join(' ') + '">' +
                  '<button class="pika-button pika-day" type="button" ' +
                     'data-pika-year="' + opts.year + '" data-pika-month="' + opts.month + '" data-pika-day="' + opts.day + '">' +
-                        opts.day +
+                        dayStr +
                  '</button>' +
                '</td>';
     },
@@ -353,18 +372,33 @@
             isMinYear = year === opts.minYear,
             isMaxYear = year === opts.maxYear,
             html = '<div class="pika-title">',
+            monthLabel = opts.monthLabel ? opts.monthLabel : opts.i18n.months[month],
+            yearLabel = opts.yearLabel ? opts.yearLabel : year + opts.yearSuffix,
             monthHtml,
             yearHtml,
             prev = true,
             next = true;
 
         for (arr = [], i = 0; i < 12; i++) {
-            arr.push('<option value="' + (year === refYear ? i - c : 12 + i - c) + '"' +
-                (i === month ? ' selected="selected"': '') +
-                ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled="disabled"' : '') + '>' +
-                opts.i18n.months[i] + '</option>');
+            if (opts.radioButtons) {
+                var labelId = 'pika-month-radio-' + i;
+                arr.push('<div class="pika-month-toggle"><input class="pika-month-input" type="radio" name="month" id="' + labelId + '" value="' + (year === refYear ? i - c : 12 + i - c) + '"' +
+                    (i === month ? ' checked="checked"': '') +
+                    ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled="disabled"' : '') + '></input>' +
+                    '<label class="pika-month-label" for="' + labelId + '">' + opts.i18n.months[i] + '</label></div>');
+            } else {
+                arr.push('<option value="' + (year === refYear ? i - c : 12 + i - c) + '"' +
+                    (i === month ? ' selected="selected"': '') +
+                    ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled="disabled"' : '') + '>' +
+                    opts.i18n.months[i] + '</option>');
+            }
         }
-        monthHtml = '<div class="pika-label">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</select></div>';
+
+        if (opts.radioButtons) {
+            monthHtml = '<div class="pika-label">' + monthLabel + '<div class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</div></div>';
+        } else {
+            monthHtml = '<div class="pika-label">' + monthLabel + '<select class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</select></div>';
+        }
 
         if (isArray(opts.yearRange)) {
             i = opts.yearRange[0];
@@ -376,10 +410,29 @@
 
         for (arr = []; i < j && i <= opts.maxYear; i++) {
             if (i >= opts.minYear) {
-                arr.push('<option value="' + i + '"' + (i === year ? ' selected="selected"': '') + '>' + (i) + '</option>');
+                var yearStr = i.toString(),
+                    isLastYearInRange = (i == j - 1) || (i == opts.maxYear);
+                if (opts.twoDigitOutput) {
+                    if (!(opts.fourDigitOutputLastYear && isLastYearInRange)) {
+                        yearStr = yearStr.substring('2'); // strip first two digits
+                    }
+                }
+                if (opts.radioButtons) {
+                    var labelId = 'pika-year-radio-' + i;
+                    arr.push('<div class="pika-year-toggle"><input class="pika-year-input" type="radio" name="year" id="' + labelId + '" value="' + i + '"' +
+                        (i === year ? ' checked="checked"': '') + '></input>' +
+                        '<label class="pika-year-label" for="' + labelId + '">' + yearStr + '</label></div>');
+                } else {
+                    arr.push('<option value="' + i + '"' + (i === year ? ' selected="selected"': '') + '>' + yearStr + '</option>');
+                }
             }
         }
-        yearHtml = '<div class="pika-label">' + year + opts.yearSuffix + '<select class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</select></div>';
+
+        if (opts.radioButtons) {
+            yearHtml = '<div class="pika-label">' + yearLabel + '<div class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</div></div>'
+        } else {
+            yearHtml = '<div class="pika-label">' + yearLabel + '<select class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</select></div>';
+        }
 
         if (opts.showMonthAfterYear) {
             html += yearHtml + monthHtml;
@@ -469,18 +522,28 @@
             if (!target) {
                 return;
             }
-            if (hasClass(target, 'pika-select-month')) {
-                self.gotoMonth(target.value);
+
+            if (opts.radioButtons) {
+                if (hasClass(target, 'pika-month-input')) {
+                    self.gotoMonth(target.value);
+                }
+                else if (hasClass(target, 'pika-year-input')) {
+                    self.gotoYear(target.value);
+                }
+            } else {
+                if (hasClass(target, 'pika-select-month')) {
+                    self.gotoMonth(target.value);
+                }
+                else if (hasClass(target, 'pika-select-year')) {
+                    self.gotoYear(target.value);
+                }
             }
-            else if (hasClass(target, 'pika-select-year')) {
-                self.gotoYear(target.value);
-            }
+
         };
 
         self._onInputChange = function(e)
         {
             var date;
-
             if (e.firedBy === self) {
                 return;
             }
@@ -742,7 +805,6 @@
                 fireEvent(this._o.field, 'change', { firedBy: this });
             }
             if (this._o.splittedOutput) {
-                console.log('splitted output');
                 var dayField = this._o.splittedOutput[0];
                 var monthField = this._o.splittedOutput[1];
                 var yearField = this._o.splittedOutput[2];
@@ -1040,7 +1102,8 @@
                         isStartRange: isStartRange,
                         isEndRange: isEndRange,
                         isInRange: isInRange,
-                        showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths
+                        showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths,
+                        twoDigitOutput: opts.twoDigitOutput
                     };
 
                 row.push(renderDay(dayConfig));
