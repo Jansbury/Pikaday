@@ -613,12 +613,22 @@
             }
         };
 
+        self._captureEvent = function(e) {
+            e = e || window.event;
+
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+        };
+
         self.el = document.createElement('div');
         self.el.className = 'pika-single' + (opts.isRTL ? ' is-rtl' : '') + (opts.theme ? ' ' + opts.theme : '');
 
         addEvent(self.el, 'mousedown', self._onMouseDown, true);
         addEvent(self.el, 'touchend', self._onMouseDown, true);
         addEvent(self.el, 'change', self._onChange);
+        addEvent(self.el, 'click', self._captureEvent);
+        addEvent(self.el, 'touchend', self._captureEvent);
 
         if (opts.field) {
             if (opts.container) {
@@ -1157,6 +1167,8 @@
             removeEvent(this.el, 'mousedown', this._onMouseDown, true);
             removeEvent(this.el, 'touchend', this._onMouseDown, true);
             removeEvent(this.el, 'change', this._onChange);
+            removeEvent(this.el, 'click', this._captureEvent);
+            removeEvent(this.el, 'touchend', this._captureEvent);
             if (this._o.field) {
                 removeEvent(this._o.field, 'change', this._onInputChange);
                 if (this._o.bound) {
