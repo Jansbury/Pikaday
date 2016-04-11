@@ -392,7 +392,7 @@
         }
 
         if (opts.radioButtons) {
-            monthHtml = '<div class="pika-label">' + monthLabel + '<div class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</div></div>';
+            monthHtml = '<div class="pika-label"><div class="pika-heading">' + monthLabel + '</div><div class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</div></div>';
         } else {
             monthHtml = '<div class="pika-label">' + monthLabel + '<select class="pika-select pika-select-month" tabindex="-1">' + arr.join('') + '</select></div>';
         }
@@ -426,7 +426,7 @@
         }
 
         if (opts.radioButtons) {
-            yearHtml = '<div class="pika-label">' + yearLabel + '<div class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</div></div>'
+            yearHtml = '<div class="pika-label"><div class="pika-heading">' + yearLabel + '</div><div class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</div></div>'
         } else {
             yearHtml = '<div class="pika-label">' + yearLabel + '<select class="pika-select pika-select-year" tabindex="-1">' + arr.join('') + '</select></div>';
         }
