@@ -151,7 +151,8 @@
                         to[prop] = from[prop].slice(0);
                     }
                 } else {
-                    to[prop] = extend({}, from[prop], overwrite);
+                    var toProp = extend({}, to[prop], overwrite);
+                    to[prop] = extend(toProp, from[prop], overwrite);
                 }
             } else if (overwrite || !hasProp) {
                 to[prop] = from[prop];
