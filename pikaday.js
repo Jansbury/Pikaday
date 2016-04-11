@@ -381,7 +381,7 @@
                 var labelId = 'pika-month-radio-' + i;
                 arr.push('<div class="pika-month-toggle"><input class="pika-month-input" type="radio" name="month" id="' + labelId + '" value="' + (year === refYear ? i - c : 12 + i - c) + '"' +
                     (i === month ? ' checked="checked"': '') +
-                    ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled="disabled"' : '') + '></input>' +
+                    ((isMinYear && i < opts.minMonth) || (isMaxYear && i > opts.maxMonth) ? 'disabled="disabled"' : '') + '>' +
                     '<label class="pika-month-label" for="' + labelId + '">' + opts.i18n.months[i] + '</label></div>');
             } else {
                 arr.push('<option value="' + (year === refYear ? i - c : 12 + i - c) + '"' +
@@ -417,7 +417,7 @@
                 if (opts.radioButtons) {
                     var labelId = 'pika-year-radio-' + i;
                     arr.push('<div class="pika-year-toggle"><input class="pika-year-input" type="radio" name="year" id="' + labelId + '" value="' + i + '"' +
-                        (i === year ? ' checked="checked"': '') + '></input>' +
+                        (i === year ? ' checked="checked"': '') + '>' +
                         '<label class="pika-year-label" for="' + labelId + '">' + yearStr + '</label></div>');
                 } else {
                     arr.push('<option value="' + i + '"' + (i === year ? ' selected="selected"': '') + '>' + yearStr + '</option>');
