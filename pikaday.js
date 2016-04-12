@@ -187,6 +187,9 @@
         // automatically show/hide the picker on `field` focus (default `true` if `field` is set)
         bound: undefined,
 
+        // keep picker visible after date selection
+        keepVisibleAfterSelection: false,
+
         // position of the datepicker, relative to the field (default to bottom & left)
         // ('bottom' & 'left' keywords are not used, 'top' & 'right' are modifier on the bottom/left position)
         position: 'bottom left',
@@ -487,7 +490,7 @@
             if (!hasClass(target, 'is-disabled')) {
                 if (hasClass(target, 'pika-button') && !hasClass(target, 'is-empty') && !hasClass(target.parentNode, 'is-disabled')) {
                     self.setDate(new Date(target.getAttribute('data-pika-year'), target.getAttribute('data-pika-month'), target.getAttribute('data-pika-day')));
-                    if (opts.bound) {
+                    if (opts.bound && !opts.keepVisibleAfterSelection) {
                         sto(function() {
                             self.hide();
                         }, 100);
