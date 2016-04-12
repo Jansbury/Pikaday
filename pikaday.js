@@ -569,8 +569,7 @@
         {
             if (!self._v){
                 self.show();
-            } else
-            {
+            } else {
                 self.hide();
             }
         };
