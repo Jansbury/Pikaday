@@ -565,9 +565,14 @@
             self.show();
         };
 
-        self._onInputClick = function()
+        self._onInputMousedown = function()
         {
-            self.show();
+            if (!self._v){
+                self.show();
+            } else
+            {
+                self.hide();
+            }
         };
 
         self._onInputBlur = function()
@@ -674,7 +679,7 @@
         if (opts.bound) {
             this.hide();
             self.el.className += ' is-bound';
-            addEvent(opts.trigger, 'click', self._onInputClick);
+            addEvent(opts.trigger, 'mousedown', self._onInputMousedown);
             addEvent(opts.trigger, 'focus', self._onInputFocus);
             addEvent(opts.trigger, 'blur', self._onInputBlur);
         } else {
@@ -1181,7 +1186,7 @@
             if (this._o.field) {
                 removeEvent(this._o.field, 'change', this._onInputChange);
                 if (this._o.bound) {
-                    removeEvent(this._o.trigger, 'click', this._onInputClick);
+                    removeEvent(this._o.trigger, 'click', this._onInputMousedown);
                     removeEvent(this._o.trigger, 'focus', this._onInputFocus);
                     removeEvent(this._o.trigger, 'blur', this._onInputBlur);
                 }
